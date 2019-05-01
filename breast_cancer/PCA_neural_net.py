@@ -4,9 +4,9 @@ from keras.callbacks import EarlyStopping
 from keras.layers import Dense, Dropout
 from sklearn.decomposition import PCA
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from breast_cancer.helpers import get_std_cancer_data
+from utils.plotting import plot_history
 from utils.preprocessing import train_test_split_dataframe
 
 
@@ -49,23 +49,7 @@ def pca_nn_breast_cancer(n_comp, model=None):
                         epochs=30,
                         callbacks=[early_stopping_monitor])
 
-    # plot training and validation accuracy over epochs
-    plt.plot(history.history['acc'])
-    plt.plot(history.history['val_acc'])
-    plt.title('Model Accuracy')
-    plt.ylabel('Accuracy')
-    plt.xlabel('Epoch')
-    plt.legend(['Train', 'Test'], loc='upper left')
-    plt.show()
-
-    # plot training and validation loss over epochs
-    plt.plot(history.history['loss'])
-    plt.plot(history.history['val_loss'])
-    plt.title('Model Loss')
-    plt.ylabel('Loss')
-    plt.xlabel('Epoch')
-    plt.legend(['train', 'test'], loc='upper left')
-    plt.show()
+    plot_history(history, val=True)
 
     return history.history['val_loss'][-1], history.history['val_acc'][-1]
 
